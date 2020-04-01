@@ -10,10 +10,32 @@ class FishSpider(scrapy.Spider):
     def parse(self, response):
         fish_links = response.css("table.roundy.sortable tr td:first-child a::attr(href)")
         yield from response.follow_all(fish_links, self.parse_fish)
+        # Hard code data for great white shark and sea horse as there is no data on them currently
+        yield {
+            "name": "Great white shark",
+            "location": "Sea",
+            "price": 15000,
+            "shadow_size": "Huge (with fin)",
+            "seasonality_n": "June to September",
+            "seasonality_s": "June to September",
+            "time_of_day": "4 PM - 9 AM",
+            "rarity": "",
+        }
+
+        yield {
+            "name": "Sea horse",
+            "location": "Sea",
+            "price": 1100,
+            "shadow_size": "Tiny",
+            "seasonality_n": "April to November",
+            "seasonality_s": "April to November",
+            "time_of_day": "All day",
+            "rarity": "",
+        }
 
     def parse_fish(self, response):
-        # There are two types of stylings that the page uses for their data cards, have to check if a class exists on a element to decide
 
+        # There are two types of stylings that the page uses for their data cards, have to check if a class exists on a element to decide
         if (response.css("aside.portable-infobox").get() is not None):
             if response.css("div.pi-item[data-source='location']").get() is None:
                 yield {
@@ -44,3 +66,5 @@ class FishSpider(scrapy.Spider):
             frog_link = response.css("ul > li:nth-child(2) > a[title='Frog (fish)']::attr(href)").get()
             if frog_link is not None:
                 yield response.follow(frog_link, self.parse_fish)
+
+        
