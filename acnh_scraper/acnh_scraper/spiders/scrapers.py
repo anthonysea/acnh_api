@@ -1,6 +1,7 @@
 import scrapy
 
 class FishSpider(scrapy.Spider):
+    # Currently does get sea horse or frog page or great white shark
     name = "fish"
     start_urls = [
         "https://animalcrossing.fandom.com/wiki/Fish_(New_Horizons)",
@@ -38,3 +39,8 @@ class FishSpider(scrapy.Spider):
                     "time_of_day": response.css("div.pi-item[data-source='timeday'] > div::text").get(),
                     "rarity": response.css("div.pi-item[data-source='rarity'] > div::text").get(),
                 }
+        else:
+            # Reached disambiguation page for frogs
+            frog_link = response.css("ul > li:nth-child(2) > a[title='Frog (fish)']::attr(href)").get()
+            if frog_link is not None:
+                yield response.follow(frog_link, self.parse_fish)
