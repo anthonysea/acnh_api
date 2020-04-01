@@ -1,0 +1,117 @@
+swagger: '2.0'
+info: 
+  title: 'Animal Crossing: New Horizons API'
+  version: '0.1'
+  description: 'Animal Crossing: New Horizons API for fish and bugs (at the moment)'
+produces: 
+  - application/json
+paths:
+  /fish:
+    get:
+      tags: [Fish]
+      operationId: app.get_fishes
+      summary: Get all fish
+    responses:
+      200:
+        description: Return a number of fish
+        schema:
+          type: object
+          properties: 
+            fish:
+              type: array
+              items:
+                $ref: '#/definitions/Fish'
+  /fish/{fish_id}:
+    get:
+      tags: [Fish]
+      operationId: app.get_fish
+      summary: Get the details of a single fish
+    responses:
+      200:
+        description: Return a fish
+        schema:
+          $ref: '#/definitions/Fish'
+      404:
+        description: Fish does not exist
+  /bugs:
+    get:
+      tags: [Bug]
+      operationId: app.get_bugs
+      summary: Get all bugs
+    responses:
+      200:
+        description: Return a list of bugs
+        schema:
+          type: object
+          properties:
+            bugs:
+              type: array
+              items:
+                $ref: '#/definitions/Bug'
+  /bugs/{bug_id}:
+    get:
+      tags: [Bug]
+      operationId: app.get_bug
+      summary: Get the details of a bug
+    responses:
+      200:
+        description: Return the details of a bug
+        schema:
+          $ref: '#/definitions/Bug'
+      404:
+        description: Bug does not exist
+
+definitions:
+  Fish:
+    type: object
+    properties:
+      id: 
+        type: int
+        description: unique id
+        readOnly: true
+      name: 
+        type: string
+        description: Name of the fish
+        minLength: 1
+        maxLength: 30
+      imageUrl: 
+        type: string
+        description: URL to the image of the fish
+      price:
+        type: int
+      location:
+        type: string
+      shadowSize: 
+        type: int
+      time:
+        type: string
+      month:
+        type: array
+        items: 
+          type: string
+
+  Bug:
+    type: object
+    properties:
+      id:
+        type: int
+        description: unique id
+        readOnly: true
+      name: 
+        type: string
+        description: Name of the bug
+        minLength: 1
+        maxLength: 30
+      imageUrl: 
+        type: string
+        description: URL to the image of the bug
+      price:
+        type: int
+      location:
+        type: string
+      time:
+        type: string
+      month:
+        type: array
+        items: 
+          type: string
