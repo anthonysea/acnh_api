@@ -7,13 +7,37 @@ class FishSpider(scrapy.Spider):
         "https://animalcrossing.fandom.com/wiki/Fish_(New_Horizons)",
     ]
 
+
     def parse(self, response):
+        fish_tables = response.css("table.roundy.sortable")
+        fishes = []
+
+        for hemisphere in fish_tables:
+            rows = hemisphere.css("tr")
+            for item in rows[1:]:
+                fish = {}
+                fish['name'] = item.css("td:first-child > a::text").get()
+                fish['image_url'] = item.css("td:nth-child(2) > a::attr(href)").get()
+                fish['price'] = int(item.css("td:nth-child(3)::text").get().strip())
+                fish['location'] = item.css("td:nth-child(4)::text").get().strip()
+                fish['shadow_size'] = item.css("td:nth-child(5)::text").get().strip()
+                fish['timeday'] = item.css("td:nth-child(6) small::text").get()
+
+                fish['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in item.css("td:nth-child(n+7)::text").getall() ]
+                fishes.append(fish)
+        
+        print(fishes)
+        return fishes
+
+        
+
+    def old_parse(self, response):
         fish_links = response.css("table.roundy.sortable tr td:first-child a::attr(href)")
         yield from response.follow_all(fish_links, self.parse_fish)
         # Hard code data for great white shark and sea horse as there is no data on them currently
         yield {
             "name": "Great white shark",
-            "location": "Sea",
+            "location": ["Sea"],
             "price": 15000,
             "shadow_size": "Huge (with fin)",
             "seasonality_n": "June to September",
@@ -24,7 +48,7 @@ class FishSpider(scrapy.Spider):
 
         yield {
             "name": "Sea horse",
-            "location": "Sea",
+            "location": ["Sea"],
             "price": 1100,
             "shadow_size": "Tiny",
             "seasonality_n": "April to November",
@@ -40,7 +64,7 @@ class FishSpider(scrapy.Spider):
             if response.css("div.pi-item[data-source='location']").get() is None:
                 yield {
                     "name": response.css("h2.pi-item[data-source='name']::text").get(),
-                    "location": response.css("div.pi-smart-data-value[data-source='location'] ::text").getall(),
+                    "location": response.css("div.pi-smart-data-value[data-source='location'] a::text").getall(),
                     "price": int(('').join(response.css("div.pi-smart-data-value[data-source='price']::text").get().strip().split(','))),
                     "shadow_size": ('/').join([x.strip() for x in response.css("div.pi-smart-data-value[data-source='shadow']::text").getall() if x is not ' ']),
                     "seasonality_n": ('').join(response.css("div.pi-smart-data-value[data-source='timeyear'] ::text").getall()),
