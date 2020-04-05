@@ -1,7 +1,6 @@
 import scrapy
 
 
-
 class CritterSpider(scrapy.Spider):
     name = "critter"
     start_urls = [
