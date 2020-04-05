@@ -1,40 +1,52 @@
 import scrapy
 
-class FishSpider(scrapy.Spider):
-    # Currently does get sea horse or frog page or great white shark
-    name = "fish"
+
+
+class CritterSpider(scrapy.Spider):
+    name = "critter"
     start_urls = [
         "https://animalcrossing.fandom.com/wiki/Fish_(New_Horizons)",
+        "https://animalcrossing.fandom.com/wiki/Bugs_(New_Horizons)",
     ]
 
 
     def parse(self, response):
-        fish_tables = response.css("table.roundy.sortable")
-        fishes = []
+        critters = []
 
         # There are two tables on the page, one for the northern hemisphere and one for the southern hemisphere
-        north_h, south_h = response.css("table.roundy.sortable")
+        if 'Fish' in response.url:
+            north_h, south_h = response.css("table.roundy.sortable")
+        elif 'Bugs' in response.url:
+            north_h, south_h = response.css("table.sortable")
+
         north_rows = north_h.css("tr")
         south_rows = south_h.css("tr")
 
-        # Need to iterate over both tables to get the seasonality information for both the southern and northern hemispheres
+        # Need to iterate over both tables to get the seasonality information of all fish for both the southern and northern hemispheres
         for n_item, s_item in list(zip(north_rows[1:], south_rows[1:])):
-            fish = {}
+            critter = {}
 
-            fish['name'] = n_item.css("td:first-child > a::text").get()
-            fish['image_url'] = n_item.css("td:nth-child(2) > a::attr(href)").get()
-            fish['price'] = int(n_item.css("td:nth-child(3)::text").get().strip())
-            fish['location'] = n_item.css("td:nth-child(4)::text").get().strip()
-            fish['shadow_size'] = n_item.css("td:nth-child(5)::text").get().strip()
-            fish['timeday'] = n_item.css("td:nth-child(6) small::text").get()
-            # List comprehension that assigns 1 if there is a checkmark (\u2713) otherwise 0
-            fish['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+7)::text").getall()] 
-            fish['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+7)::text").getall()]
-            
-            fishes.append(fish)
+            critter['name'] = n_item.css("td:first-child > a::text").get()
+            critter['image_url'] = n_item.css("td:nth-child(2) > a::attr(href)").get()
+            critter['price'] = int(n_item.css("td:nth-child(3)::text").get().strip()) if n_item.css("td:nth-child(3)::text").get().strip() is not "?" else "?"
+            critter['location'] = n_item.css("td:nth-child(4)::text").get().strip()     
+            critter['timeday'] = n_item.css("td:nth-child(6) small::text").get()
+
+            if 'Fish' in response.url:
+                critter['shadow_size'] = n_item.css("td:nth-child(5)::text").get().strip()
+                # List comprehension that assigns 1 if there is a checkmark (\u2713) otherwise 0
+                critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+7)::text").getall()] 
+                critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+7)::text").getall()]
+                critter['type'] = 'fish'
+            elif 'Bugs' in response.url:
+                critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+6)::text").getall()] 
+                critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+6)::text").getall()]
+                critter['type'] = 'bug'
+
+            critters.append(critter)
         
-        print(fishes)
-        return fishes
+        return critters
+            
 
 
     # def old_parse(self, response):
