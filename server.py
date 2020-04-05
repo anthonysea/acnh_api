@@ -10,10 +10,6 @@ app = connexion.App(__name__, specification_dir='./')
 CORS(app.app)
 app.add_api("api.yml")
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000) 
-
-
 def get_data():
     process = CrawlerProcess(settings={
         'FEED_FORMAT': 'json',
@@ -22,3 +18,16 @@ def get_data():
 
     process.crawl(CritterSpider)
     process.start()
+
+if __name__ == '__main__':
+    json_files = ['critters.json']
+
+    # scrape and create json data files
+    for file in json_files:
+        if not os.path.isfile(file):
+            get_data()
+
+    
+    app.run(debug=True, host='0.0.0.0', port=5000) 
+
+

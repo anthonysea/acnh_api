@@ -10,6 +10,7 @@ class CritterSpider(scrapy.Spider):
 
 
     def parse(self, response):
+        id = 1
         critters = []
 
         # There are two tables on the page, one for the northern hemisphere and one for the southern hemisphere
@@ -24,24 +25,27 @@ class CritterSpider(scrapy.Spider):
         # Need to iterate over both tables to get the seasonality information of all fish for both the southern and northern hemispheres
         for n_item, s_item in list(zip(north_rows[1:], south_rows[1:])):
             critter = {}
-
+            
             critter['name'] = n_item.css("td:first-child > a::text").get()
             critter['image_url'] = n_item.css("td:nth-child(2) > a::attr(href)").get()
             critter['price'] = int(n_item.css("td:nth-child(3)::text").get().strip()) if n_item.css("td:nth-child(3)::text").get().strip() is not "?" else "?"
             critter['location'] = n_item.css("td:nth-child(4)::text").get().strip()     
-            critter['timeday'] = n_item.css("td:nth-child(6) small::text").get()
-
+            
             if 'Fish' in response.url:
                 critter['shadow_size'] = n_item.css("td:nth-child(5)::text").get().strip()
+                critter['timeday'] = n_item.css("td:nth-child(6) small::text").get()
                 # List comprehension that assigns 1 if there is a checkmark (\u2713) otherwise 0
                 critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+7)::text").getall()] 
                 critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+7)::text").getall()]
                 critter['type'] = 'fish'
             elif 'Bugs' in response.url:
+                critter['timeday'] = n_item.css("td:nth-child(5) small::text").get()
                 critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+6)::text").getall()] 
                 critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+6)::text").getall()]
                 critter['type'] = 'bug'
 
+            critter['id'] = id
+            id += 1
             critters.append(critter)
         
         return critters
