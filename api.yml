@@ -9,7 +9,7 @@ paths:
   /fish:
     get:
       tags: [Fish]
-      operationId: app.get_fishes
+      operationId: endpoints.get_fishes
       summary: Get all fish
       responses:
         200:
@@ -24,7 +24,7 @@ paths:
   /fish/{fish_id}:
     get:
       tags: [Fish]
-      operationId: app.get_fish
+      operationId: endpoints.get_fish
       summary: Get the details of a single fish
       parameters:
       - in: path
@@ -42,7 +42,7 @@ paths:
   /bugs:
     get:
       tags: [Bug]
-      operationId: app.get_bugs
+      operationId: endpoints.get_bugs
       summary: Get all bugs
       responses:
         200:
@@ -57,7 +57,7 @@ paths:
   /bugs/{bug_id}:
     get:
       tags: [Bug]
-      operationId: app.get_bug
+      operationId: endpoints.get_bug
       summary: Get the details of a bug
       parameters:
       - in: path
