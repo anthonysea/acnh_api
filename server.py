@@ -1,4 +1,4 @@
-import connexion, scrapy
+import connexion, scrapy, os
 
 from flask import Flask, render_template
 from flask_cors import CORS

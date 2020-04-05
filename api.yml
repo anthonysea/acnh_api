@@ -11,62 +11,74 @@ paths:
       tags: [Fish]
       operationId: app.get_fishes
       summary: Get all fish
-    responses:
-      200:
-        description: Return a number of fish
-        schema:
-          type: object
-          properties: 
-            fish:
-              type: array
-              items:
-                $ref: '#/definitions/Fish'
+      responses:
+        200:
+          description: Return a number of fish
+          schema:
+            type: object
+            properties: 
+              fish:
+                type: array
+                items:
+                  $ref: '#/definitions/Fish'
   /fish/{fish_id}:
     get:
       tags: [Fish]
       operationId: app.get_fish
       summary: Get the details of a single fish
-    responses:
-      200:
-        description: Return a fish
-        schema:
-          $ref: '#/definitions/Fish'
-      404:
-        description: Fish does not exist
+      parameters:
+      - in: path
+        name: fish_id
+        type: integer
+        required: true
+        description: Numeric ID of the fish
+      responses:
+        200:
+          description: Return a fish
+          schema:
+            $ref: '#/definitions/Fish'
+        404:
+          description: Fish does not exist
   /bugs:
     get:
       tags: [Bug]
       operationId: app.get_bugs
       summary: Get all bugs
-    responses:
-      200:
-        description: Return a list of bugs
-        schema:
-          type: object
-          properties:
-            bugs:
-              type: array
-              items:
-                $ref: '#/definitions/Bug'
+      responses:
+        200:
+          description: Return a list of bugs
+          schema:
+            type: object
+            properties:
+              bugs:
+                type: array
+                items:
+                  $ref: '#/definitions/Bug'
   /bugs/{bug_id}:
     get:
       tags: [Bug]
       operationId: app.get_bug
       summary: Get the details of a bug
-    responses:
-      200:
-        description: Return the details of a bug
-        schema:
-          $ref: '#/definitions/Bug'
-      404:
-        description: Bug does not exist
+      parameters:
+      - in: path
+        name: bug_id
+        type: integer
+        required: true
+        description: Numeric ID of the fish
+      responses:
+        200:
+          description: Return the details of a bug
+          schema:
+            $ref: '#/definitions/Bug'
+        404:
+          description: Bug does not exist
 
 definitions:
   Fish:
     type: object
     properties:
       id: 
-        type: int
+        type: integer
         description: unique id
         readOnly: true
       name: 
@@ -78,23 +90,21 @@ definitions:
         type: string
         description: URL to the image of the fish
       price:
-        type: int
+        type: integer
       location:
         type: string
       shadowSize: 
-        type: int
+        type: integer
       time:
         type: string
       month:
-        type: array
-        items: 
-          type: string
+        type: string
 
   Bug:
     type: object
     properties:
       id:
-        type: int
+        type: integer
         description: unique id
         readOnly: true
       name: 
@@ -106,12 +116,10 @@ definitions:
         type: string
         description: URL to the image of the bug
       price:
-        type: int
+        type: integer
       location:
         type: string
       time:
         type: string
       month:
-        type: array
-        items: 
-          type: string
+        type: string
