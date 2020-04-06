@@ -56,11 +56,8 @@ def main():
 
         db.session.commit()
 
-        # Testing
-        # c1 = Critter(name='fish1', price=100, location='river', shadow_size='1')
-        # db.session.add(c1)
-        # db.session.commit()
 
+        # debugging
         critters = Critter.query.all()
         critter_schema = CritterSchema(many=True)
         print(critter_schema.dump(critters))
