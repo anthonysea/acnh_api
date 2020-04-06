@@ -10,7 +10,7 @@ class Critter(db.Model):
     image_url = db.Column(db.String(512))
     price = db.Column(db.Integer)
     location = db.Column(db.String(128))
-    shadow_size = db.Column(db.String(64))
+    shadow_size = db.Column(db.String(4))
     timeday = db.Column(db.String(64))
     seasonality_n = db.Column(db.String(12))
     seasonality_s = db.Column(db.String(12))
