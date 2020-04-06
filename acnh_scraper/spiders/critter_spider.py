@@ -10,7 +10,6 @@ class CritterSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        id = 1
         critters = []
 
         # There are two tables on the page, one for the northern hemisphere and one for the southern hemisphere
@@ -44,8 +43,6 @@ class CritterSpider(scrapy.Spider):
                 critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+6)::text").getall()]
                 critter['type'] = 'bug'
 
-            critter['id'] = id
-            id += 1
             critters.append(critter)
         
         return critters
