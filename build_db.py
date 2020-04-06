@@ -4,16 +4,15 @@ from app import create_app
 from models import db, Critter, CritterSchema
 from scrapy.crawler import CrawlerProcess
 from acnh_scraper.spiders.critter_spider import CritterSpider
+from acnh_scraper.spiders.fossil_spider import FossilSpider
 
 
 def create_json():
     '''Calls the crawler process and scrapes data using the CritterSpider. Creates critters.json'''
-    process = CrawlerProcess(settings={
-        'FEED_FORMAT': 'json',
-        'FEED_URI': 'critters.json'
-    })
+    process = CrawlerProcess()
 
     process.crawl(CritterSpider)
+    process.crawl(FossilSpider)
     process.start()
 
 
@@ -24,6 +23,7 @@ def load_json_data():
             return data
     except IOError as err:
         print("critters.json does not exist")
+        return -1
 
 
 def main():
@@ -31,6 +31,9 @@ def main():
         create_json()
         
     data = load_json_data()
+    if data is -1:
+        print("Failed to load json")
+        return 
     ### Start of DB creation
     if os.path.exists('test.db'):
         os.remove('test.db')

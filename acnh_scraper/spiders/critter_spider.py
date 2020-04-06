@@ -3,6 +3,10 @@ import scrapy
 
 class CritterSpider(scrapy.Spider):
     name = "critter"
+    custom_settings = {
+        "FEED_FORMAT": "json",
+        "FEED_URI": "critters.json"
+    }
     start_urls = [
         "https://animalcrossing.fandom.com/wiki/Fish_(New_Horizons)",
         "https://animalcrossing.fandom.com/wiki/Bugs_(New_Horizons)",

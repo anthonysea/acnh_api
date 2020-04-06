@@ -2,6 +2,10 @@ import scrapy
 
 class FossilSpider(scrapy.Spider):
     name = "fossil"
+    custom_settings = {
+        "FEED_FORMAT": "json",
+        "FEED_URI": "fossils.json"
+    }
     start_urls = [
         "https://animalcrossing.fandom.com/wiki/Fossils_(New_Horizons)"
     ]
