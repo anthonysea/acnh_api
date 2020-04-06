@@ -1,37 +1,35 @@
 import json
+from models import Critter, CritterSchema, db
 
 def get_fishes():
-    '''Load all fish from critters.json'''
-    with open('critters.json') as f:
-        data = json.load(f)
-    
-    fish_data = [fish for fish in data if fish['type'] == 'fish']
+    '''Load all fish from the database'''
+    fish = Critter.query.filter(Critter.critter_type=='fish').all()
 
-    return fish_data, 200
+    fish_schema = CritterSchema(many=True)
+    return fish_schema.dump(fish)
 
 def get_fish(fish_id):
-    with open('critters.json') as f:
-        data = json.load(f)
-    fish_query = [fish for fish in data if fish['id'] == fish_id]
-    if fish_query:
-        fish = fish_query[0]
-    else:
-        return {
-            'detail': f'The fish with id {fish_id} does not exist',
-            'status': 404,
-            'title': 'Fish Not Found',
-            'type': 'about:blank',
-        }
-    return fish, 200
+    pass
+    # with open('critters.json') as f:
+    #     data = json.load(f)
+    # fish_query = [fish for fish in data if fish['id'] == fish_id]
+    # if fish_query:
+    #     fish = fish_query[0]
+    # else:
+    #     return {
+    #         'detail': f'The fish with id {fish_id} does not exist',
+    #         'status': 404,
+    #         'title': 'Fish Not Found',
+    #         'type': 'about:blank',
+    #     }
+    # return fish, 200
 
 def get_bugs():
     '''Load all bugs from critters.json'''
-    with open('critters.json') as f:
-        data = json.load(f)
+    bugs = Critter.query.filter(Critter.critter_type=='bug').all()
 
-    bug_data = [bug for bug in data if bug['type'] == 'bug']
-
-    return bug_data, 200
+    bug_schema = CritterSchema(many=True)
+    return bug_schema.dump(bugs)
 
 def get_bug(bug_id):
     pass

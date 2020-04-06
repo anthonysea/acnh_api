@@ -38,8 +38,7 @@ def main():
     app = create_app()
     with app.app_context():
         db.create_all()
-        print(data[0])
-        # TODO: insert all json entries into database
+        # insert all json entries into database
         for critter in data:
             shadow_size = critter['shadow_size'] if 'shadow_size' in critter else None
             temp_critter = Critter(
