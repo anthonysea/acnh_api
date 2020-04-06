@@ -6,6 +6,20 @@ db = SQLAlchemy()
 ma = Marshmallow()
 
 
+class Fossil(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+    image_url = db.Column(db.String(512))
+    price = db.Column(db.Integer)
+    fossil_type = db.Column(db.String(16))
+    group = db.Column(db.String(64))
+
+
+class FossilSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Fossil
+
+
 class Critter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))

@@ -26,7 +26,7 @@ class FossilSpider(scrapy.Spider):
             fossil["name"] = row.css("td:first-child > a::text").get()
             fossil["image_url"] = row.css("td:nth-child(2) > a::attr(href)").get()
             fossil["price"] = int("".join(row.css("td:nth-child(3)::text").get().strip().split()[0].split(",")))
-            fossil["type"] = "stand-alone"
+            fossil["fossil_type"] = "stand-alone"
             fossil["group"] = None
 
             fossils.append(fossil)
@@ -44,7 +44,7 @@ class FossilSpider(scrapy.Spider):
             fossil["name"] = row.css("td:first-child > a::text").get()
             fossil["image_url"] = row.css("td:nth-child(2) > a::attr(href)").get()
             fossil["price"] = int("".join(row.css("td:nth-child(3)::text").get().strip().split()[0].split(",")))
-            fossil["type"] = "multi-part"
+            fossil["fossil_type"] = "multi-part"
             fossil["group"] = current_fossil_group
 
             fossils.append(fossil)

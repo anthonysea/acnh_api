@@ -40,12 +40,12 @@ class CritterSpider(scrapy.Spider):
                 # List comprehension that assigns 1 if there is a checkmark (\u2713) otherwise 0
                 critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+7)::text").getall()] 
                 critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+7)::text").getall()]
-                critter['type'] = 'fish'
+                critter['critter_type'] = 'fish'
             elif 'Bugs' in response.url:
                 critter['timeday'] = n_item.css("td:nth-child(5) small::text").get()
                 critter['seasonality_n'] = [1 if month.strip() == '\u2713' else 0 for month in n_item.css("td:nth-child(n+6)::text").getall()] 
                 critter['seasonality_s'] = [1 if month.strip() == '\u2713' else 0 for month in s_item.css("td:nth-child(n+6)::text").getall()]
-                critter['type'] = 'bug'
+                critter['critter_type'] = 'bug'
 
             critters.append(critter)
         

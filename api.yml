@@ -2,10 +2,43 @@ swagger: '2.0'
 info: 
   title: 'Animal Crossing: New Horizons API'
   version: '0.1'
-  description: 'Animal Crossing: New Horizons API for fish and bugs (at the moment)'
+  description: 'Animal Crossing: New Horizons API for fish, bugs, and fossils (at the moment)'
 produces: 
   - application/json
 paths:
+  /fossils:
+    get:
+      tags: [Fossil]
+      operationId: endpoints.get_fossils
+      summary: Get all fossils
+      responses:
+        200:
+          description: Return all fossils
+          schema:
+            type: object
+            properties:
+              fossils:
+                type: array
+                items:
+                  $ref: '#/definitions/Fossil'
+  /fossils/{fossil_id}:
+    get:
+      tags: [Fossil]
+      operationId: endpoints.get_fossil
+      summary: Get a single fossil
+      parameters:
+      - in: path
+        name: fossil_id
+        type: integer
+        required: true
+        description: ID of the fossil
+      responses:
+        200:
+          description: Get a single fossil
+          schema:
+            $ref: '#/definitions/Fossil'
+        404:
+          description: Fish does not exist
   /fish:
     get:
       tags: [Fish]
@@ -74,6 +107,27 @@ paths:
           description: Bug does not exist
 
 definitions:
+  Fossil:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: unique id
+        readOnly: true
+      name:
+        type: string
+        description: Name of the fossil
+        minLength: 1
+      imageUrl:
+        type: string
+        description: URL to the image of the fossil (if exists)
+      price: 
+        type: integer
+      fossil_type:
+        type: string
+      group:
+        type: string
+      
   Fish:
     type: object
     properties:
@@ -99,6 +153,8 @@ definitions:
         type: string
       month:
         type: string
+      critter_type:
+        type: string
 
   Bug:
     type: object
@@ -123,3 +179,5 @@ definitions:
         type: string
       month:
         type: string
+      critter_type:
+        type: string        
