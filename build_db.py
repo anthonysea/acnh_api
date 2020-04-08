@@ -32,7 +32,7 @@ def load_json_data(filename):
 
 def main():
     # Create json files if do not exist
-    json_files = ["critters.json", "fossils.json"]
+    json_files = ["critters.json", "fossils.json", "villagers.json"]
     if not all(map(os.path.isfile, json_files)):
         create_json()
     
@@ -80,10 +80,6 @@ def main():
                     db.session.add(temp_fossil)
                 db.session.commit()
 
-        # debugging
-        # critters = Critter.query.all()
-        # critter_schema = CritterSchema(many=True)
-        # print(critter_schema.dump(critters))
 
         fossils = Fossil.query.all()
         fossil_schema = FossilSchema(many=True)

@@ -38,7 +38,7 @@ paths:
           schema:
             $ref: '#/definitions/Fossil'
         404:
-          description: Fish does not exist
+          description: Fossil does not exist
   /fish:
     get:
       tags: [Fish]
