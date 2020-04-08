@@ -4,11 +4,13 @@ from app import create_app
 from models import (
     db,
     Critter, CritterSchema,
-    Fossil, FossilSchema
+    Fossil, FossilSchema,
+    Villager, VillagerSchema,
 )
 from scrapy.crawler import CrawlerProcess
 from acnh_scraper.spiders.critter_spider import CritterSpider
 from acnh_scraper.spiders.fossil_spider import FossilSpider
+from acnh_scraper.spiders.villager_spider import VillagerSpider
 
 
 def create_json():
@@ -80,14 +82,31 @@ def main():
                     db.session.add(temp_fossil)
                 db.session.commit()
 
+            elif filename == "villagers.json":
+                for villager in data:
+                    temp_villager = Villager(
+                        name=villager["name"],
+                        image_url=villager["image_url"],
+                        personality=villager["personality"],
+                        species=villager["species"],
+                        birthdate_month=villager["birthdate_month"],
+                        birthdate_day=villager["birthdate_day"],
+                        catchphrase=villager["catchphrase"]
+                    )
+                    db.session.add(temp_villager)
+                db.session.commit()
+
         # debugging
         # critters = Critter.query.all()
         # critter_schema = CritterSchema(many=True)
         # print(critter_schema.dump(critters))
 
-        fossils = Fossil.query.all()
-        fossil_schema = FossilSchema(many=True)
-        print(fossil_schema.dump(fossils))
+        # fossils = Fossil.query.all()
+        # fossil_schema = FossilSchema(many=True)
+        # print(fossil_schema.dump(fossils))
+        villagers = Villager.query.all()
+        villager_schema = VillagerSchema(many=True)
+        print(villager_schema.dump(villagers))
 
 if __name__ == "__main__":
     main()
