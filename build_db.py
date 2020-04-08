@@ -80,6 +80,10 @@ def main():
                     db.session.add(temp_fossil)
                 db.session.commit()
 
+        # debugging
+        # critters = Critter.query.all()
+        # critter_schema = CritterSchema(many=True)
+        # print(critter_schema.dump(critters))
 
         fossils = Fossil.query.all()
         fossil_schema = FossilSchema(many=True)

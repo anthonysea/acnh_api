@@ -6,6 +6,21 @@ db = SQLAlchemy()
 ma = Marshmallow()
 
 
+class Villager(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    image_url = db.Column(db.String(512))
+    personality = db.Column(db.String(32))
+    species = db.Column(db.String(32))
+    birthdate_month = db.Column(db.Integer)
+    birthdate_day = db.Column(db.Integer)
+    catchphrase = db.Column(db.String(32))
+
+
+class VillagerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Villager
+
 class Fossil(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))

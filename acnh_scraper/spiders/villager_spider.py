@@ -1,4 +1,5 @@
 import scrapy
+
 MONTHS = {
     "January": 1,
     "February": 2,
@@ -13,6 +14,8 @@ MONTHS = {
     "November": 11,
     "December": 12
 }
+
+
 class VillagerSpider(scrapy.Spider):
     name = "villager"
     custom_settings = {
