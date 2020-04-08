@@ -6,6 +6,39 @@ info:
 produces: 
   - application/json
 paths:
+  /villagers:
+    get:
+      tags: [Villager]
+      operationId: endpoints.get_villagers
+      summary: Get all villagers
+      responses:
+        200:
+          description: Return all villagers
+          schema:
+            type: object
+            properties:
+              villagers:
+                type: array
+                items:
+                  $ref: '#/definitions/Villager'
+  /villagers/{villager_id}:
+    get:
+      tags: [Fossil]
+      operationId: endpoints.get_villager
+      summary: Get villager by ID
+      parameters:
+      - in: path
+        name: villager_id
+        type: integer
+        required: true
+        description: ID of the villager
+      responses:
+        200:
+          description: Return villager
+          schema:
+            $ref: '#/definitions/Villager'
+        404:
+          description: Villager does not exist
   /fossils:
     get:
       tags: [Fossil]
@@ -107,6 +140,35 @@ paths:
           description: Bug does not exist
 
 definitions:
+  Villager:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Villager ID
+        readOnly: true
+      name: 
+        type: string
+        description: Name of the villager
+        minLength: 1
+      imageUrl:
+        type: string
+        description: URL of the image of the villager (if exists)
+      personality:
+        type: string
+        description: Personality of the villager
+      species:
+        type: string
+        description: Species of the villager
+      birthdate_month:
+        type: integer
+        description: Birthdate month
+      birthdate_day:
+        type: integer
+        description: Birthdate day
+      catchphrase:
+        type: string
+        description: Villager's catchphrase
   Fossil:
     type: object
     properties:
@@ -123,10 +185,13 @@ definitions:
         description: URL to the image of the fossil (if exists)
       price: 
         type: integer
+        description: Price of the fossil when selling to Timmy/Tommy
       fossil_type:
         type: string
+        description: Type of the fossil either stand-alone or multi-part
       group:
         type: string
+        description: The group that the fossil belongs to (may be null)
       
   Fish:
     type: object

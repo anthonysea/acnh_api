@@ -104,6 +104,7 @@ def main():
         # fossils = Fossil.query.all()
         # fossil_schema = FossilSchema(many=True)
         # print(fossil_schema.dump(fossils))
+        
         villagers = Villager.query.all()
         villager_schema = VillagerSchema(many=True)
         print(villager_schema.dump(villagers))
