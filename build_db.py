@@ -19,6 +19,7 @@ def create_json():
 
     process.crawl(CritterSpider)
     process.crawl(FossilSpider)
+    process.crawl(VillagerSpider)
     process.start()
 
 
