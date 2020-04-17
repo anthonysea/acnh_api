@@ -54,6 +54,7 @@ class CritterSchema(ma.SQLAlchemySchema):
     
     id = ma.auto_field()
     name = ma.auto_field()
+    image_url = ma.auto_field()
     price = ma.auto_field()
     location = ma.auto_field()
     shadow_size = ma.auto_field()
