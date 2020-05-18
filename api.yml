@@ -5,6 +5,8 @@ info:
   description: 'Animal Crossing: New Horizons API for fish, bugs, and fossils (at the moment)'
 produces: 
   - application/json
+
+basePath: /api
 paths:
   /villagers:
     get:
